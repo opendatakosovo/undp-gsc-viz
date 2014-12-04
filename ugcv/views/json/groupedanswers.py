@@ -5,12 +5,11 @@ import simplejson as json
 class GroupedAnswers(View):
 
     def dispatch_request(self, group):
-    	pass
 
         # Build response object.
-        #resp = Response(
-        #    response=json.dumps(places_json[category]),
-        #    mimetype='application/json')
+        resp = Response(
+            response=json.dumps({"test": "hello"}),
+            mimetype='application/json')
 
         # Return response.
-        #return resp
+        return resp
