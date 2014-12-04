@@ -118,7 +118,7 @@ def register_url_rules(app):
 def register_json_url_rules(app):
     # Index.
     app.add_url_rule(
-        '/json/groupedanswers/<string:group>',
+        '/json/question/<int:qid>/group/<string:group>',
         view_func=GroupedAnswers.as_view('json_groupedanswers'))
 
 
@@ -133,5 +133,5 @@ def register_page_url_rules(app):
 
     # Index.
     app.add_url_rule(
-        '/question/<int:question_id>',
+        '/question/<int:qid>',
         view_func=Answers.as_view('answers'))
