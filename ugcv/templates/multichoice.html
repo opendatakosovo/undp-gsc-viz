@@ -32,25 +32,47 @@
 
     group = $('#spiderweb-group-select').val();
     jsonUrl = '/json/question/' + {{qid}} + '/group/' + group;
+    var id = {{qid}};
+    var qKey = "q" + id;
 
     $.get(jsonUrl, function(jsonResult){
 
-      // TODO: Look at the Console in the browser to see what jsonResult looks like
-      console.log(jsonResult);
+        // TODO: Look at the Console in the browser to see what jsonResult looks like
+        //console.log(jsonResult);
 
-      // TODO: build categories array based on jsonResult. Look at javascript functions you can use in utils.js
-      var categories = ['Sales', 'Marketing', 'Development', 'Customer Support', 'Information Technology', 'Administration']
+        // TODO: build categories array base on jsonResult. Look at javascript functions you can use in utils.js
+	    var categories = [];
 
-      // TODO: build series array based on jsonResult.
-      var series = [{
-          name: 'Allocated Budget',
-          data: [43000, 19000, 60000, 35000, 17000, 10000],
-          pointPlacement: 'on'
-        }, {
-          name: 'Actual Spending',
-          data: [50000, 39000, 42000, 31000, 26000, 14000],
-          pointPlacement: 'on'
-        }]
+        for(var i = 0; i < jsonResult['count']['answers']; i++){
+            var aKey = "a" + (i + 1);
+		    categories[i] = i + 1;
+		}
+		console.log(categories);
+        // TODO: build series array based on jsonResult.
+
+        // TODO: build series array based on jsonResult.
+        var series = [];
+
+        // For each group...
+        for (var g = 0; g < jsonResult['count']['group']; g++){
+            var group = jsonResult['answers'][g];
+            var data = [];
+
+            // Get the value for each answer
+            for(var i = 0; i < jsonResult['count']['answers']; i++){
+                // Build the data array
+                var aKey = 'a' + (i + 1);
+                data[i] = group[aKey];
+            }
+
+            var seriesItem = {
+                name: group['_id'], // Get the name of the group
+                data: data,
+                pointPlacement: 'on'
+            }
+
+            series[g] = seriesItem;
+        }
 
         $('#spiderweb').highcharts({
           chart: {
@@ -81,7 +103,7 @@
 
           tooltip: {
               shared: true,
-              pointFormat: '<span style="color:{series.color}">{series.name}: <b>${point.y:,.0f}</b><br/>'
+              pointFormat: '<span style="color:{series.color}">{series.name}: <b>{point.y:,.0f}</b><br/>'
           },
 
           legend: {
@@ -96,6 +118,8 @@
       });
 
     });
+
+
   }
 
   /**
