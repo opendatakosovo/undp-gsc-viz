@@ -1,6 +1,7 @@
 <html>
 <head>
     
+
     <!-- jQuery -->
     <script src="https://code.jquery.com/jquery-1.11.1.min.js"></script>
 
@@ -15,9 +16,15 @@
 
     <!-- page styling -->
     <link rel="stylesheet" type="text/css" href="{{ url_for('static', filename='style.css') }}" />
+  
+    <!-- Page nav styling -->
+    <link rel="stylesheet" type="text/css" href="{{ url_for('static', filename='ArrowNavigationStyles/css/normalize.css') }}" />
+    <link rel="stylesheet" type="text/css" href="{{ url_for('static', filename='ArrowNavigationStyles/css/demo.css') }}" />
+    <link rel="stylesheet" type="text/css" href="{{ url_for('static', filename='ArrowNavigationStyles/css/component.css') }}" />
 
-    <!-- page nav styling -->
-    <link rel="stylesheet" type="text/css" href="{{ url_for('static', filename='pagenav.css') }}" />
+    <!--[if IE]>
+      <script src="http://html5shiv.googlecode.com/svn/trunk/html5.js"></script>
+    <![endif]-->
 
     <script>
       $(document).ready(function(){
@@ -47,14 +54,15 @@
             $('span.prev-title').html("Index page.");
             $('h3.prev-text').html("Return to the index page.");
 
-            $('a.prev').attr('href', '/');
+            var indexHref = $('.navbar-brand').attr('href')
+            $('a.prev').attr('href', indexHref);
             
           }else{
             // Current page is one of the question pages that is not the first question page.
             var prevQuestion = getQuestion('q' + prevQid);
             $('h3.prev-text').html(prevQuestion);
 
-            $('a.prev').attr('href', '/question/' + prevQid);
+            $('a.prev').attr('href', '{{ config.BASE_PATH }}/question/' + prevQid);
           }
         }
       }
@@ -83,7 +91,7 @@
 
         // Set next page arrow button
         $('h3.next-text').html(nextQuestion);
-        $('a.next').attr('href', '/question/' + nextQid);
+        $('a.next').attr('href', '{{ config.BASE_PATH }}/question/' + nextQid);
       }
     </script>
 <title>
@@ -117,11 +125,11 @@
         <a class="prev" style="visibility: hidden;"  href="/item1">
           <span class="icon-wrap"><svg class="icon" width="24" height="24" viewBox="0 0 64 64"><use xlink:href="#arrow-left"></svg></span>
           <div>
-            <span class="prev-title">Previous Question</span>
-            <h3 class="prev-text"></h3>
+            <span class="prev-title" style="text-decoration: none;">Previous Question</span>
+            <h3 class="prev-text" style="text-decoration: none;"></h3>
           </div>
         </a>
-        <a class="next"  href="/item3">
+        <a class="next" href="/item3">
           <span class="icon-wrap"><svg class="icon" width="24" height="24" viewBox="0 0 64 64"><use xlink:href="#arrow-right"></svg></span>
           <div>
             <span class="next-title">Next Question</span>
