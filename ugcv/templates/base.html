@@ -68,21 +68,17 @@
       }
 
       function initNextPageArrow(qid){
-        var nextQid = -1;
+        var nextQid = qid + 1;
         var nextQuestion = '';
 
         if(qid != undefined){
-
           // Hide next page arrow button when we are at the last question.
-          if(nextQid == 13){
-            $('a.prev').css('visibility', 'hidden');  
+          if(qid == 15){
+            $('a.next').css('visibility', 'hidden');  
+          }else{
+            // Get next question.
+            nextQuestion = getQuestion('q' + nextQid);
           }
-
-          // Get next question.
-          nextQid = qid + 1;
-          nextQuestion = getQuestion('q' + nextQid);
-         
-
         }else{
           // Get next question.
           nextQid = 1;

@@ -40,6 +40,13 @@ var QUESTIONS_ANSWERS_DICT = {
     "q4": {
         "question": "Have you ever witnessed corruption in your current workplace?",
         "answers": {
+            "a1": "No",
+            "a2": "Yes"
+        }
+    },
+    "q5": {
+        "question": "What best describes the corruption you witnessed?",
+        "answers": {
             "a1": "Embezzlement, theft (including time theft not working required hours) and fraud",
             "a2": "Extortion (including sexual extortion)",
             "a3": "Nepotism, favoritism and patronage",
@@ -48,8 +55,23 @@ var QUESTIONS_ANSWERS_DICT = {
             "a6": "Trading in influence"
         }
     },
+    "q6": {
+        "question": "Did you report the corruption described?",
+        "answers": {
+            "a1": "No",
+            "a2": "Yes",
+            "a3": "Choose not to answer"
+        }
+    },
     "q7": {
         "question": "In your current workplace, have you ever been asked to participate in corrupt practices?",
+        "answers": {
+            "a1": "No",
+            "a2": "Yes"
+        }
+    },
+    "q8": {
+        "question": "What best describes the type of corruption you participated in?",
         "answers": {
             "a1": "Embezzlement, theft (including time theft not working required hours) and fraud",
             "a2": "Extortion (including sexual extortion)",
@@ -57,6 +79,14 @@ var QUESTIONS_ANSWERS_DICT = {
             "a4": "Bribery",
             "a5": "Abuse of discretionary powers",
             "a6": "Trading in influence"
+        }
+    },
+    "q9": {
+        "question": "Did you report the corruption described?",
+        "answers": {
+            "a1": "No",
+            "a2": "Yes",
+            "a3": "Choose not to answer"
         }
     },
     "q10": {
@@ -69,6 +99,62 @@ var QUESTIONS_ANSWERS_DICT = {
             "a5": "Has a gender responsive anti-corruption policy",
             "a6": "Men and women employees that report corruption are protected from reprisals",
             "a7": "Has established relationships with non-government organizations and government organizations working to fight against corruption"
+        }
+    },
+    "q11": {
+        "question": "Have workplace policies relating to your employment been made available to you?",
+        "answers": {
+            "a1": "Recruitment policies and requirements (such as exam results, qualifications, age, level)",
+            "a2": "Salary and remuneration policies including overtime",
+            "a3": "Promotion policies",
+            "a4": "Working hours policies",
+            "a5": "Training or professional development opportunities",
+            "a6": "Retrenchment policies",
+            "a7": "Retirement policies",
+            "a8": "Redundancy policies",
+            "a9": "Disciplinary measures",
+            "a10": "Code of conduct",
+            "a11": "Anti-corruption policies",
+
+        }
+    },
+    "q12": {
+        "question": "How would you described the information provided in the policies and regulations?",
+        "answers": {
+            "a1": "The information provided was relevant to my situation",
+            "a2": "The information was provided in a timely manner",
+            "a3": "The information provided was accurate",
+            "a4": "I could easily understand the information"
+        }
+    },
+    "q13": {
+        "question": "How would you described the information provided in the policies and regulations?",
+        "answers": {
+            "a1": "Women and men enjoy the same recruitment requirements (such as exam results, qualifications, age, level)",
+            "a2": "Women and men enjoy the same salary and remuneration, including overtime",
+            "a3": "Women and men are subject to the same promotion procedures",
+            "a4": "Women and men work the same hours",
+            "a5": "Women and men enjoy the same training opportunities",
+            "a6": "Women and men enjoy the same professional development opportunities",
+            "a7": "Women and men are subject to the same retrenchment policies / procedures",
+            "a8": "Women and men are subject to the same retirement regulations",
+            "a9": "Women and men are subject to the same redundancy packages",
+            "a10": "Women and men are subject to the same disciplinary measures"
+        }
+    },
+    "q14": {
+        "question": "Do discretionary powers exist within the public administration whereby management can grant additional pay or benefits to certain employees?",
+        "answers": {
+            "a1": "No",
+            "a2": "Yes"
+        }
+    },
+    "q15": {
+        "question": "If you answered yes to the previous question, is the criteria for granting additional pay and benefits made available to all staff?",
+        "answers": {
+            "a1": "No",
+            "a2": "Yes",
+            "a3": "Choose not to answer"
         }
     }
 }

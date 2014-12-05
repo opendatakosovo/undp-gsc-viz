@@ -36,22 +36,9 @@
     var qKey = "q" + id;
 
     $.get(jsonUrl, function(jsonResult){
-
-        // TODO: Look at the Console in the browser to see what jsonResult looks like
-        //console.log(jsonResult);
-
-        // TODO: build categories array base on jsonResult. Look at javascript functions you can use in utils.js
-	    var categories = [];
-
-        for(var i = 0; i < jsonResult['count']['answers']; i++){
-            var aKey = "a" + (i + 1);
-		    categories[i] = i + 1;
-		}
-		console.log(categories);
-        // TODO: build series array based on jsonResult.
-
-        // TODO: build series array based on jsonResult.
+        var categories = [];
         var series = [];
+        var categoriesInitialized = false;
 
         // For each group...
         for (var g = 0; g < jsonResult['count']['group']; g++){
@@ -63,7 +50,14 @@
                 // Build the data array
                 var aKey = 'a' + (i + 1);
                 data[i] = group[aKey];
+
+                // Build the categories array
+                if(!categoriesInitialized){
+                  categories[i] = i + 1;
+                }
             }
+
+            categoriesInitialized = true;
 
             var seriesItem = {
                 name: group['_id'], // Get the name of the group
@@ -114,12 +108,8 @@
           },
 
           series: series
-
       });
-
     });
-
-
   }
 
   /**
@@ -149,9 +139,14 @@
             <label class="control-label col-sm-2" for="spiderweb-group-select">Group by</label>
             <div class="col-sm-2">
               <select id="spiderweb-group-select" class="form-control">
-                <option value="gender" selected>Gender</option>
+                <option value="age.label">Age</option>
                 <option value="education">Education</option>
-                <option value="municipality">Municipality</option>
+                <option value="employment.level">Employment Level</option>
+                <option value="employment.position">Employment Position</option>
+                <option value="ethnicity">Ethniciy</option>
+                <option value="gender" selected>Gender</option>
+                <option value="income.label">Income</option>
+                <option value="maritalstatus">Marital Status</option>
               </select>
             </div>
           </div>
