@@ -13,13 +13,92 @@
     <!-- Bootstrap compiled and minified CSS -->
     <link rel="stylesheet" type="text/css" href="{{ url_for('static', filename='bootstrap/css/bootstrap.min.css') }}" />
 
-    <!-- Site styling -->
+    <!-- page styling -->
     <link rel="stylesheet" type="text/css" href="{{ url_for('static', filename='style.css') }}" />
+
+    <!-- page nav styling -->
+    <link rel="stylesheet" type="text/css" href="{{ url_for('static', filename='pagenav.css') }}" />
+
+    <script>
+      $(document).ready(function(){
+        var qid = {{qid}}
+
+        initPageTitle(qid);
+        initPreviousPageArrow(qid);
+        initNextPageArrow(qid);
+      });
+
+      function initPageTitle(qid){
+        if(qid != undefined){
+          var question = getQuestion('q' + qid);
+          $('h3.page-title').html(question)
+        }
+      }
+
+      function initPreviousPageArrow(qid){
+        var prevQid = qid - 1;
+
+        if(qid != undefined){
+          // Show the previous page nav arrow link
+          $('a.prev').css('visibility', 'visible');
+
+          if(prevQid == 0){
+            // Current page is first question page. Previous page is index page.
+            $('span.prev-title').html("Index page.");
+            $('h3.prev-text').html("Return to the index page.");
+
+            $('a.prev').attr('href', '/');
+            
+          }else{
+            // Current page is one of the question pages that is not the first question page.
+            var prevQuestion = getQuestion('q' + prevQid);
+            $('h3.prev-text').html(prevQuestion);
+
+            $('a.prev').attr('href', '/question/' + prevQid);
+          }
+        }
+      }
+
+      function initNextPageArrow(qid){
+        var nextQid = -1;
+        var nextQuestion = '';
+
+        if(qid != undefined){
+
+          // Hide next page arrow button when we are at the last question.
+          if(nextQid == 13){
+            $('a.prev').css('visibility', 'hidden');  
+          }
+
+          // Get next question.
+          nextQid = qid + 1;
+          nextQuestion = getQuestion('q' + nextQid);
+         
+
+        }else{
+          // Get next question.
+          nextQid = 1;
+          nextQuestion = getQuestion('q1');
+        }
+
+        // Set next page arrow button
+        $('h3.next-text').html(nextQuestion);
+        $('a.next').attr('href', '/question/' + nextQid);
+      }
+    </script>
 <title>
     Gender equality related corruption risks and vulnerabilities in civil service in Kosovo
 </title>
 </head>
 <body>
+  <div class="svg-wrap">
+    <svg width="64" height="64" viewBox="0 0 64 64">
+      <path id="arrow-left" d="M26.667 10.667q1.104 0 1.885 0.781t0.781 1.885q0 1.125-0.792 1.896l-14.104 14.104h41.563q1.104 0 1.885 0.781t0.781 1.885-0.781 1.885-1.885 0.781h-41.563l14.104 14.104q0.792 0.771 0.792 1.896 0 1.104-0.781 1.885t-1.885 0.781q-1.125 0-1.896-0.771l-18.667-18.667q-0.771-0.813-0.771-1.896t0.771-1.896l18.667-18.667q0.792-0.771 1.896-0.771z" />
+    </svg>
+    <svg width="64" height="64" viewBox="0 0 64 64">
+      <path id="arrow-right" d="M37.333 10.667q1.125 0 1.896 0.771l18.667 18.667q0.771 0.771 0.771 1.896t-0.771 1.896l-18.667 18.667q-0.771 0.771-1.896 0.771-1.146 0-1.906-0.76t-0.76-1.906q0-1.125 0.771-1.896l14.125-14.104h-41.563q-1.104 0-1.885-0.781t-0.781-1.885 0.781-1.885 1.885-0.781h41.563l-14.125-14.104q-0.771-0.771-0.771-1.896 0-1.146 0.76-1.906t1.906-0.76z" />
+    </svg>
+  </div>
 
   <nav class="navbar navbar-default" role="navigation">
       {% if config.BASE_PATH == '' %}
@@ -28,18 +107,32 @@
           <a class="navbar-brand" href="{{ config.BASE_PATH }}">Gender equality related corruption risks and vulnerabilities in civil service in Kosovo</a>
       {% endif %}
   </nav>
-  <div class="container" style="padding-top:10px;">
-  	{% block body %}{% endblock %}
-  </div>
 
-  <div class="push-for-footer"></div>
+  <div class="" style="padding-top:10px;">
+    <h3 class="page-title"></h3>
+    <hr class="style-eight">
 
-  <div class="footer">
-      <div class="footer-container" align="center">
-          <p class="text-muted">
-          </p>
+    <section>
+      <nav class="nav-growpop">
+        <a class="prev" style="visibility: hidden;"  href="/item1">
+          <span class="icon-wrap"><svg class="icon" width="24" height="24" viewBox="0 0 64 64"><use xlink:href="#arrow-left"></svg></span>
+          <div>
+            <span class="prev-title">Previous Question</span>
+            <h3 class="prev-text"></h3>
+          </div>
+        </a>
+        <a class="next"  href="/item3">
+          <span class="icon-wrap"><svg class="icon" width="24" height="24" viewBox="0 0 64 64"><use xlink:href="#arrow-right"></svg></span>
+          <div>
+            <span class="next-title">Next Question</span>
+            <h3 class="next-text"></h3>
+          </div>
+        </a>
+      </nav>
+      <div>
+        {% block body %}{% endblock %}
       </div>
+    </section>
   </div>
-
 </body>
 </html>

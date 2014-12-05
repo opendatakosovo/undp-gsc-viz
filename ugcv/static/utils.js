@@ -1,6 +1,6 @@
 var QUESTIONS_ANSWERS_DICT = {
     "q1": {
-        "question": "Which of these practices within the workplaca do you think are corrupt?",
+        "question": "Which of these practices within the workplace do you think are corrupt?",
         "answers": {
             "a1": "Accepting gifts or hospitality from a civil servant",
             "a2": "Taking supplies or materials from work for home use",
@@ -27,8 +27,18 @@ var QUESTIONS_ANSWERS_DICT = {
             "a6": "Trading in influence"
         }
     },
-    "q5": {
-        "question": "What best describe the corruption you witnessed?",
+    "q3": {
+        "question": "How prevalent do you believe corruption is in the civil of your country?",
+        "answers": {
+            "a1": "Not prevalent",
+            "a2": "A bit prevalent",
+            "a3": "Somewhat prevalent",
+            "a4": "Prevalent",
+            "a5": "Very prevalent",
+        }
+    },
+    "q4": {
+        "question": "Have you ever witnessed corruption in your current workplace?",
         "answers": {
             "a1": "Embezzlement, theft (including time theft not working required hours) and fraud",
             "a2": "Extortion (including sexual extortion)",

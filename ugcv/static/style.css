@@ -1,21 +1,3 @@
-/* Sticky footer styles
--------------------------------------------------- */
-html {
-  position: relative;
-  min-height: 100%;
-}
-body {
-  /* Margin bottom by footer height */
-  margin-bottom: 80px;
-}
-
-.center {
-    margin-left: auto;
-    margin-right: auto;
-    width: 70%;
-    background-color: #b0e0e6;
-}
-
  /* Fancy HR */
 hr.style-eight {
   padding: 0;
@@ -23,6 +5,8 @@ hr.style-eight {
   border-top: medium double #333;
   color: #333;
   text-align: center;
+  margin-left:33%;
+  margin-right:33%
 }
 hr.style-eight:after {
   content: "§";
@@ -34,37 +18,7 @@ hr.style-eight:after {
   background: white;
 }
 
-h1.page-title {
+/* Page title */
+h3.page-title {
   text-align: center;
-  text-transform: uppercase;
-}
-
-.category-selection-box {
-  padding-top: 20px;
-  padding-bottom: 20px;
-  padding-left: 20px;
-  padding-right: 20px;
-  background-color: #dd4814;
-}
-
-.category-selection-box .text{
-  color: white;
-  text-transform: uppercase;
-}
-
-#map { 
-  height: 600px;
-}
-
-.push-for-footer{
-  height: 40px;
-}
-
-.footer {
-  position: absolute;
-  bottom: 0;
-  width: 100%;
-  /* Set the fixed height of the footer here */
-  height: 40px;
-  background-color: #dd4814;
 }
