@@ -34,8 +34,8 @@ nav a svg {
 	z-index: 100;
 	display: block;
 	padding: 20px 10px;
-	border: 0px solid #dd4814;
-	background: #dd4814;
+	border: 0px solid #2c3e50;
+	background: #2c3e50;
 	-webkit-transition: border-width 0.3s 0.15s;
 	transition: border-width 0.3s 0.15s;
 }

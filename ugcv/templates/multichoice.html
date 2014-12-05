@@ -4,11 +4,13 @@
 <!-- Chart scripts -->
 <script src="http://code.highcharts.com/highcharts.js"></script>
 <script src="http://code.highcharts.com/highcharts-more.js"></script>
+<script src="http://code.highcharts.com/modules/data.js"></script>
 <script src="http://code.highcharts.com/modules/exporting.js"></script>
 
 <script>
   $(document).ready(function() {
-    // Handler for .ready() called.
+    
+    initAnswerList();
     drawSpiderweb();
 
     $('#spiderweb-group-select').change(function() {
@@ -18,11 +20,15 @@
 
   });
 
-  /**
-   * Draw the bubble chart.
-   **/
-  function drawBubbleChart(){
+  function initAnswerList(){
+    var qid = {{qid}};
+    var qKey = "q" + qid;
 
+    var answers = getAnswers(qKey);
+
+    $.each(answers, function(index, answer) {
+      $('#answer-list').append('<li>' + answer);
+    }); 
   }
 
   /**
@@ -31,9 +37,9 @@
   function drawSpiderweb(){
 
     group = $('#spiderweb-group-select').val();
-    jsonUrl = '/json/question/' + {{qid}} + '/group/' + group;
-    var id = {{qid}};
-    var qKey = "q" + id;
+    jsonUrl = '{{ config.BASE_PATH }}/json/question/' + {{qid}} + '/group/' + group;
+    var qid = {{qid}};
+    var qKey = "q" + qid;
 
     $.get(jsonUrl, function(jsonResult){
         var categories = [];
@@ -41,15 +47,15 @@
         var categoriesInitialized = false;
 
         // For each group...
-        for (var g = 0; g < jsonResult['count']['group']; g++){
-            var group = jsonResult['answers'][g];
+        for (var j = 0; j < jsonResult['count']['group']; j++){
+            var answer = jsonResult['answers'][j];
             var data = [];
 
             // Get the value for each answer
             for(var i = 0; i < jsonResult['count']['answers']; i++){
                 // Build the data array
                 var aKey = 'a' + (i + 1);
-                data[i] = group[aKey];
+                data[i] = answer[aKey];
 
                 // Build the categories array
                 if(!categoriesInitialized){
@@ -60,12 +66,12 @@
             categoriesInitialized = true;
 
             var seriesItem = {
-                name: group['_id'], // Get the name of the group
+                name: answer['_id'], // Get the name of the group
                 data: data,
                 pointPlacement: 'on'
             }
 
-            series[g] = seriesItem;
+            series[j] = seriesItem;
         }
 
         $('#spiderweb').highcharts({
@@ -112,61 +118,35 @@
     });
   }
 
-  /**
-   * Draw the windrose chart.
-   **/
-  function drawWindrose(){
-
-  }
 </script>
 
+<div id="answers-container">
+  <ol id="answer-list">
+  </ol>
+</div>
 
-  <div id="bubblechart">
-    Bubble Chart goes here.
-  </div>
+<br>
 
-  <br><br>
+<div id="group-selection-container">
+  <form class="form-horizontal" role="form">
+      <div class="form-group">
+        <label class="control-label col-sm-2" for="spiderweb-group-select">Group&nbsp;by</label>
+        <div class="col-sm-7">
+          <select id="spiderweb-group-select" class="form-control">
+            <option value="age.label">Age</option>
+            <option value="education">Education</option>
+            <option value="employment.level">Employment Level</option>
+            <option value="employment.position">Employment Position</option>
+            <option value="ethnicity">Ethniciy</option>
+            <option value="gender" selected>Gender</option>
+            <option value="income.label">Income</option>
+            <option value="maritalstatus">Marital Status</option>
+          </select>
+        </div>
+      </div>
+  </form>
+</div>
 
-  <div id="spiderweb-container">
-
-    <div id="spiderweb" style="min-width: 400px; max-width: 600px; height: 400px; margin: 0 auto"></div> 
-
-    <br>
-
-    <div>
-      <form class="form-horizontal" role="form">
-          <div class="form-group">
-            <label class="control-label col-sm-2" for="spiderweb-group-select">Group by</label>
-            <div class="col-sm-2">
-              <select id="spiderweb-group-select" class="form-control">
-                <option value="age.label">Age</option>
-                <option value="education">Education</option>
-                <option value="employment.level">Employment Level</option>
-                <option value="employment.position">Employment Position</option>
-                <option value="ethnicity">Ethniciy</option>
-                <option value="gender" selected>Gender</option>
-                <option value="income.label">Income</option>
-                <option value="maritalstatus">Marital Status</option>
-              </select>
-            </div>
-          </div>
-      </form>
-    </div>
-
-    <div>
-      
-    </div>
-
-  </div>
-
-  <br><br>
-
-  <div id="windrose">
-    Windrose goes here.
-  </div>
-
-
-
-</table>
+<div id="spiderweb" style="min-width: 500px; max-width: 700px; height: 500px; margin: 0 auto"></div> 
 
 {% endblock %}

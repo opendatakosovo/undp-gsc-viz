@@ -28,7 +28,10 @@
 
     <script>
       $(document).ready(function(){
-        var qid = {{qid}}
+        var qid = undefined;
+        {% if qid %}
+          qid = {{qid}};
+        {% endif %}
 
         initPageTitle(qid);
         initPreviousPageArrow(qid);
@@ -121,15 +124,15 @@
         <a class="prev" style="visibility: hidden;"  href="/item1">
           <span class="icon-wrap"><svg class="icon" width="24" height="24" viewBox="0 0 64 64"><use xlink:href="#arrow-left"></svg></span>
           <div>
-            <span class="prev-title" style="text-decoration: none;">Previous Question</span>
-            <h3 class="prev-text" style="text-decoration: none;"></h3>
+            <span class="prev-title" style="font-size:1.7em;">Previous Question</span>
+            <h3 class="prev-text" style="font-size:1.7em;"></h3>
           </div>
         </a>
         <a class="next" href="/item3">
           <span class="icon-wrap"><svg class="icon" width="24" height="24" viewBox="0 0 64 64"><use xlink:href="#arrow-right"></svg></span>
           <div>
-            <span class="next-title">Next Question</span>
-            <h3 class="next-text"></h3>
+            <span class="next-title" style="font-size:1.7em;">Next Question</span>
+            <h3 class="next-text" style="font-size:1.7em;"></h3>
           </div>
         </a>
       </nav>
