@@ -98,10 +98,12 @@ def configure_logging(app):
 
 # Views for json responses
 from views.json.groupedanswers import GroupedAnswers
+from views.json.documentedcorruptions import DocumentedCorruptions
 
 # Views for Page rendering
 from views.pages.index import Index
 from views.pages.answers import Answers
+from views.pages.corruptiontypes import CorruptionTypes
 
 
 def register_url_rules(app):
@@ -121,6 +123,11 @@ def register_json_url_rules(app):
         '/json/question/<int:qid>/group/<string:group>',
         view_func=GroupedAnswers.as_view('json_groupedanswers'))
 
+    # Index.
+    app.add_url_rule(
+        '/json/documented-corruptions/<string:corruption_type>/group/<string:group>',
+        view_func=DocumentedCorruptions.as_view('json_documentedcorruptions'))
+
 
 def register_page_url_rules(app):
     ''' Register the URL rules for page requests.
@@ -131,7 +138,12 @@ def register_page_url_rules(app):
         '/',
         view_func=Index.as_view('index'))
 
-    # Index.
+    # Question and Answers.
     app.add_url_rule(
         '/question/<int:qid>',
         view_func=Answers.as_view('answers'))
+
+    # Corruption Type.
+    app.add_url_rule(
+        '/corruption-types',
+        view_func=CorruptionTypes.as_view('corruption_types'))

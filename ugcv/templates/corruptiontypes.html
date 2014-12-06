@@ -1,0 +1,132 @@
+{% extends "base.html" %}
+{% block title %}
+Perceived, Witnessed, and Participated Corruption
+{% endblock %}
+
+{% block body %}
+
+<!-- Chart scripts -->
+<script src="http://code.highcharts.com/highcharts.js"></script>
+<script src="http://code.highcharts.com/highcharts-more.js"></script>
+<script src="http://code.highcharts.com/modules/exporting.js"></script>
+
+<script>
+  $(document).ready(function() {
+    
+    drawSpiderweb();
+
+    $('#spiderweb-corruption-type-select').change(function() {
+      // Every we select a new corruption type, let's redraw the chart.
+      drawSpiderweb();
+    });
+
+    $('#spiderweb-group-select').change(function() {
+      // Every we select a new group, let's redraw the chart.
+      drawSpiderweb();
+    });
+
+  });
+
+  function drawSpiderweb(){
+    var corruptionType = $('#spiderweb-corruption-type-select').val();
+    var group = $('#spiderweb-group-select').val();
+    var jsonUrl = '{{ config.BASE_PATH }}/json/documented-corruptions/' + corruptionType + '/group/' + group;
+
+    $.get(jsonUrl, function(jsonResult){
+
+        var series = []
+
+        $.each(jsonResult, function(idx, itm) {
+
+            var seriesItem = {
+                name: itm['_id'],
+                data: [itm['perceived'], itm['witnessed'], itm['participated']],
+                pointPlacement: 'on'
+            }
+
+            series[idx] = seriesItem;
+        });
+
+
+        $('#spiderweb').highcharts({
+            chart: {
+              polar: true,
+              type: 'line'
+            },
+
+            title: {
+              text: '',
+              x: -80
+            },
+
+            pane: {
+              size: '80%'
+            },
+
+            xAxis: {
+              categories: ['Perceived', 'Witnessed', 'Participated'],
+              tickmarkPlacement: 'on',
+              lineWidth: 0
+            },
+
+            yAxis: {
+              gridLineInterpolation: 'polygon',
+              lineWidth: 0,
+              min: 0
+            },
+
+            tooltip: {
+              shared: true,
+              pointFormat: '<span style="color:{series.color}">{series.name}: <b>{point.y:,.0f}</b><br/>'
+            },
+
+            legend: {
+              align: 'right',
+              verticalAlign: 'top',
+              y: 70,
+              layout: 'vertical'
+            },
+
+            series: series
+        });
+
+    });
+  }
+ </script>
+
+ <div id="group-selection-container" style="width:400px;">
+  <form class="form-horizontal" role="form">
+        <div class="form-group">
+        <label class="control-label col-sm-4" for="spiderweb-corruption-type-select">Corruption&nbsp;Type</label>
+        <div class="col-sm-7">
+          <select id="spiderweb-corruption-type-select" class="form-control">
+            <option value="embezzlement">Embezzlement</option>
+            <option value="extortion">Extortion</option>
+            <option value="nepotism" selected>Nepotism</option>
+            <option value="bribery">Bribery</option>
+            <option value="discretionary-powers">Abuse of discretionary powers</option>
+            <option value="trading-influence">Trading in influence</option>
+          </select>
+        </div>
+      </div>
+      <div class="form-group">
+        <label class="control-label col-sm-4" for="spiderweb-group-select">Group&nbsp;by</label>
+        <div class="col-sm-7">
+          <select id="spiderweb-group-select" class="form-control">
+            <option value="age.label">Age</option>
+            <option value="education">Education</option>
+            <option value="employment.level">Employment Level</option>
+            <option value="employment.position">Employment Position</option>
+            <option value="ethnicity">Ethnicity</option>
+            <option value="gender" selected>Gender</option>
+            <option value="income.label">Income</option>
+            <option value="maritalstatus">Marital Status</option>
+          </select>
+        </div>
+      </div>
+  </form>
+</div>
+
+<div id="spiderweb" style="min-width: 700px; max-width: 900px; height: 700px; margin: 0 auto"></div>
+
+{% endblock %}
