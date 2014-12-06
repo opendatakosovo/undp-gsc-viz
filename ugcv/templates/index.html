@@ -8,50 +8,83 @@
 
 <script src="http://code.highcharts.com/highcharts.js"></script>
 <script src="http://code.highcharts.com/modules/exporting.js"></script>
-
+ 
 <script>
     $(document).ready(function() {
-        $('#piechart').highcharts({
-            chart: {
-                plotBackgroundColor: null,
-                plotBorderWidth: null,
-                plotShadow: false
-            },
-            title: {
-                text: ''
-            },
-            tooltip: {
-                pointFormat: '{series.name}: <b>{point.percentage:.1f}%</b>'
-            },
-            plotOptions: {
-                pie: {
-                    allowPointSelect: true,
-                    cursor: 'pointer',
-                    dataLabels: {
-                        enabled: true,
-                        format: '<b>{point.name}</b>: {point.percentage:.1f} %',
-                        style: {
-                            color: (Highcharts.theme && Highcharts.theme.contrastTextColor) || 'black'
-                        }
-                    }
-                }
-            },
-            series: [{
-                type: 'pie',
-                name: 'Browser share',
-                data: [
-                    ['Firefox',   45.0],
-                    ['IE',       26.8],
-                    ['Chrome',   12.8],
-                    ['Safari',    8.5],
-                    ['Opera',     6.2],
-                    ['Others',   0.7]
-                ]
-            }]
+        drawPieChart();
+
+        $('#spiderweb-group-select').change(function() {
+          // Every time we select a new group, let's redraw the chart.
+          drawPieChart();
         });
     });
+
+    function drawPieChart(){
+        var group = $('#spiderweb-group-select').val();
+        var jsonUrl = '{{ config.BASE_PATH }}/json/surveyee/distribution/' + group;
+        
+        $.get(jsonUrl, function(jsonResult){
+            var data = [];
+
+            $.each(jsonResult, function(idx, itm){
+                data[idx] = [itm['_id'], itm['count']];
+            });
+
+            $('#piechart').highcharts({
+                chart: {
+                    plotBackgroundColor: null,
+                    plotBorderWidth: null,
+                    plotShadow: false
+                },
+                title: {
+                    text: ''
+                },
+                tooltip: {
+                    pointFormat: '{series.name}: <b>{point.percentage:.1f}%</b>'
+                },
+                plotOptions: {
+                    pie: {
+                        allowPointSelect: true,
+                        cursor: 'pointer',
+                        dataLabels: {
+                            enabled: true,
+                            format: '<b>{point.name}</b>: {point.percentage:.1f} %',
+                            style: {
+                                color: (Highcharts.theme && Highcharts.theme.contrastTextColor) || 'black'
+                            }
+                        }
+                    }
+                },
+                series: [{
+                    type: 'pie',
+                    name: 'Surveyee Distribution',
+                    data: data
+                }]
+            });
+        });
+    }
 </script>
 
+<div id="group-selection-container">
+  <form class="form-horizontal" role="form">
+      <div class="form-group">
+        <label class="control-label col-sm-4" for="spiderweb-group-select">Group&nbsp;by</label>
+        <div class="col-sm-7">
+          <select id="spiderweb-group-select" class="form-control">
+            <option value="age.label">Age</option>
+            <option value="education">Education</option>
+            <option value="employment.level">Employment Level</option>
+            <option value="employment.position">Employment Position</option>
+            <option value="ethnicity">Ethnicity</option>
+            <option value="gender" selected>Gender</option>
+            <option value="income.label">Income</option>
+            <option value="maritalstatus">Marital Status</option>
+            <option value="municipality">Municipality</option>
+          </select>
+        </div>
+      </div>
+  </form>
+</div>
 <div id="piechart" style="min-width: 410px; height: 500px; max-width: 700px; margin: 0 auto"></div>
 
 

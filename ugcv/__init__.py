@@ -119,7 +119,13 @@ def register_url_rules(app):
 
 
 def register_json_url_rules(app):
-    # Index.
+    # Surveyee distribution
+    app.add_url_rule(
+        '/json/surveyee/distribution/<string:group>',
+        view_func=SurveyeeDistribution.as_view('json_surveyeedistribution'))
+
+
+    # Question and Answers.
     app.add_url_rule(
         '/json/question/<int:qid>/group/<string:group>',
         view_func=GroupedAnswers.as_view('json_groupedanswers'))
