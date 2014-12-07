@@ -128,7 +128,7 @@ var QUESTIONS_ANSWERS_DICT = {
         }
     },
     "q13": {
-        "question": "How would you described the information provided in the policies and regulations?",
+        "question": "In your opinion, do men and women enjoy the same working conditions within the civil service?",
         "answers": {
             "a1": "Women and men enjoy the same recruitment requirements (such as exam results, qualifications, age, level).",
             "a2": "Women and men enjoy the same salary and remuneration, including overtime.",
