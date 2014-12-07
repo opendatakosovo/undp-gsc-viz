@@ -58,7 +58,9 @@
   </nav>
 
   <div class="" style="padding-top:10px;">
-    <h3 class="page-title">{% block title %}{% endblock %}</h3>
+    <div id="title-container">
+      <h3 class="page-title">{% block title %}{% endblock %}</h3>
+    </div>
     <hr class="style-eight">
     {% block body %}{% endblock %}
   </div>

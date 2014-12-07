@@ -1,4 +1,4 @@
-nav a {
+nav.nav-growpop a {
 	position: absolute;
 	top: 50%;
 	display: block;
@@ -9,15 +9,15 @@ nav a {
 	transform: translateY(-50%);
 }
 
-nav a.prev {
+nav.nav-growpop a.prev {
 	left: 0;
 }
 
-nav a.next {
+nav.nav-growpop a.next {
 	right: 0;
 }
 
-nav a svg {
+nav.nav-growpop a svg {
 	display: block;
 	margin: 0 auto;
 	padding: 0;
@@ -123,6 +123,8 @@ nav a svg {
 }
 
 .nav-growpop a:hover div {
+	border: 1px solid;
+	border-color: #2c3e50;
 	opacity: 1;
 	-webkit-transition-delay: 0.3s;
 	transition-delay: 0.3s;

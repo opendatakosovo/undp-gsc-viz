@@ -6,6 +6,7 @@
 <script src="http://code.highcharts.com/highcharts-more.js"></script>
 <script src="http://code.highcharts.com/modules/exporting.js"></script>
 
+
 <!-- Page nav styling -->
 <link rel="stylesheet" type="text/css" href="{{ url_for('static', filename='ArrowNavigationStyles/css/normalize.css') }}" />
 <link rel="stylesheet" type="text/css" href="{{ url_for('static', filename='ArrowNavigationStyles/css/demo.css') }}" />
@@ -189,52 +190,55 @@
   </svg>
 </div>
 
-<div id="answers-container">
-  <ol id="answer-list">
-  </ol>
-</div>
-
 <section>
   <nav class="nav-growpop">
     <a class="prev" style="visibility: hidden;"  href="/item1">
       <span class="icon-wrap"><svg class="icon" width="24" height="24" viewBox="0 0 64 64"><use xlink:href="#arrow-left"></svg></span>
       <div>
-        <span class="prev-title" style="font-size:1.7em;">Previous Question</span>
-        <h3 class="prev-text" style="font-size:1.7em;"></h3>
+        <span class="prev-title">Previous Question</span>
+        <h3 class="prev-text"></h3>
       </div>
     </a>
     <a class="next" href="/item3">
       <span class="icon-wrap"><svg class="icon" width="24" height="24" viewBox="0 0 64 64"><use xlink:href="#arrow-right"></svg></span>
       <div>
-        <span class="next-title" style="font-size:1.7em;">Next Question</span>
-        <h3 class="next-text" style="font-size:1.7em;"></h3>
+        <span class="next-title">Next Question</span>
+        <h3 class="next-text"></h3>
       </div>
     </a>
   </nav>
   <div>
-   <div id="group-selection-container">
-      <form class="form-horizontal" role="form">
-          <div class="form-group">
-            <label class="control-label col-sm-2" for="spiderweb-group-select">Group&nbsp;by</label>
-            <div class="col-sm-7">
-              <select id="spiderweb-group-select" class="form-control">
-                <option value="age.label">Age</option>
-                <option value="education">Education</option>
-                <option value="employment.level">Employment Level</option>
-                <option value="employment.position">Employment Position</option>
-                <option value="ethnicity">Ethnicity</option>
-                <option value="gender" selected>Gender</option>
-                <option value="income.label">Income</option>
-                <option value="maritalstatus">Marital Status</option>
-              </select>
-            </div>
-          </div>
-      </form>
+    <div id="answers-container">
+      <ol id="answer-list">
+      </ol>
     </div>
-    <div id="spiderweb" style="min-width: 500px; max-width: 700px; height: 500px; margin: 0 auto"></div>  
+    <br>
+    <div>
+      <div id="group-selection-container">
+        <form class="form-horizontal" role="form">
+            <div class="form-group">
+              <label class="control-label col-sm-2" for="spiderweb-group-select">Group&nbsp;by</label>
+              <div class="col-sm-7">
+                <select id="spiderweb-group-select" class="form-control">
+                  <option value="age.label">Age</option>
+                  <option value="education">Education</option>
+                  <option value="employment.level">Employment Level</option>
+                  <option value="employment.position">Employment Position</option>
+                  <option value="ethnicity">Ethnicity</option>
+                  <option value="gender" selected>Gender</option>
+                  <option value="income.label">Income</option>
+                  <option value="maritalstatus">Marital Status</option>
+                </select>
+              </div>
+            </div>
+        </form>
+      </div>
+      <div id="spiderweb" style="min-width: 500px; max-width: 700px; height: 500px; margin: 0 auto"></div>  
+    </div>
   </div>
+
 </section>
 
 
-
 {% endblock %}
+
