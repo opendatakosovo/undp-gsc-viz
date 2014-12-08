@@ -13,23 +13,23 @@ Perceived, Witnessed, and Participated Corruption
 <script>
   $(document).ready(function() {
     
-    drawSpiderweb();
+    drawBarChart();
 
-    $('#spiderweb-corruption-type-select').change(function() {
+    $('#corruption-type-select').change(function() {
       // Every we select a new corruption type, let's redraw the chart.
-      drawSpiderweb();
+      drawBarChart();
     });
 
-    $('#spiderweb-group-select').change(function() {
+    $('#group-select').change(function() {
       // Every we select a new group, let's redraw the chart.
-      drawSpiderweb();
+      drawBarChart();
     });
 
   });
 
-  function drawSpiderweb(){
-    var corruptionType = $('#spiderweb-corruption-type-select').val();
-    var group = $('#spiderweb-group-select').val();
+  function drawBarChart(){
+    var corruptionType = $('#corruption-type-select').val();
+    var group = $('#group-select').val();
     var jsonUrl = '{{ config.BASE_PATH }}/json/documented-corruptions/' + corruptionType + '/group/' + group;
 
     $.get(jsonUrl, function(jsonResult){
@@ -40,55 +40,40 @@ Perceived, Witnessed, and Participated Corruption
 
             var seriesItem = {
                 name: itm['_id'],
-                data: [itm['perceived'], itm['witnessed'], itm['participated']],
-                pointPlacement: 'on'
+                data: [itm['perceived'], itm['witnessed'], itm['participated']]
             }
 
             series[idx] = seriesItem;
         });
 
 
-        $('#spiderweb').highcharts({
-            chart: {
-              polar: true,
-              type: 'line'
-            },
+         $('#barchart').highcharts({
 
-            title: {
-              text: '',
-              x: -80
-            },
-
-            pane: {
-              size: '80%'
-            },
-
-            xAxis: {
-              categories: ['Perceived', 'Witnessed', 'Participated'],
-              tickmarkPlacement: 'on',
-              lineWidth: 0
-            },
-
-            yAxis: {
-              gridLineInterpolation: 'polygon',
-              lineWidth: 0,
-              min: 0
-            },
-
-            tooltip: {
-              shared: true,
-              pointFormat: '<span style="color:{series.color}">{series.name}: <b>{point.y:,.0f}</b><br/>'
-            },
-
-            legend: {
-              align: 'right',
-              verticalAlign: 'top',
-              y: 70,
-              layout: 'vertical'
-            },
-
-            series: series
-        });
+                    chart: {
+                        type: 'bar'
+                    },
+                    title: {
+                        text: ''
+                    },
+                    xAxis: {
+                        categories: ['Perceived','Witnessed', 'Participated']
+                    },
+                    yAxis: {
+                        min: 0,
+                        title: {
+                            text: ''
+                        }
+                    },
+                    legend: {
+                        reversed: true
+                    },
+                    plotOptions: {
+                        series: {
+                            stacking: 'normal'
+                        }
+                    },
+                    series: series
+                });
 
     });
   }
@@ -99,7 +84,7 @@ Perceived, Witnessed, and Participated Corruption
     <div class="form-group">
       <label class="control-label col-sm-4" for="spiderweb-corruption-type-select">Corruption&nbsp;Type</label>
       <div class="col-sm-7">
-        <select id="spiderweb-corruption-type-select" class="form-control">
+        <select id="corruption-type-select" class="form-control">
           <option value="embezzlement">Embezzlement</option>
           <option value="extortion">Extortion</option>
           <option value="nepotism" selected>Nepotism</option>
@@ -112,7 +97,7 @@ Perceived, Witnessed, and Participated Corruption
     <div class="form-group">
       <label class="control-label col-sm-4" for="spiderweb-group-select">Group&nbsp;by</label>
       <div class="col-sm-7">
-        <select id="spiderweb-group-select" class="form-control">
+        <select id="group-select" class="form-control">
           <option value="age.label" selected>Age</option>
           <option value="education">Education</option>
           <option value="employment.level">Employment Level</option>
@@ -127,6 +112,6 @@ Perceived, Witnessed, and Participated Corruption
   </form>
 </div>
 
-<div id="spiderweb" style="min-width: 410px; height: 500px; max-width: 700px; margin: 0 auto"></div>
+<div id="barchart" style="min-width: 410px; height: 500px; max-width: 700px; margin: 0 auto"></div>
 
 {% endblock %}
