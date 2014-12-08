@@ -28,7 +28,7 @@ var QUESTIONS_ANSWERS_DICT = {
         }
     },
     "q3": {
-        "question": "How prevalent do you believe corruption is in the civil of your country?",
+        "question": "How prevalent do you believe corruption is in the civil service of your country?",
         "answers": {
             "a1": "Not prevalent.",
             "a2": "A bit prevalent.",
