@@ -24,14 +24,14 @@ div#title-container{
 }
 
 /* Page title */
-h3.page-title {
+.page-title {
   text-align: center;
 }
 
 div#answers-container{
   text-align:left;
-  margin-left:30%;
-  margin-right:30%;
+  margin-left:20%;
+  margin-right:20%;
 }
 
 div#group-selection-container{
