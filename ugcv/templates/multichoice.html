@@ -1,194 +1,107 @@
-{% extends "base.html" %}
-{% block body %}
+{% extends "answers.html" %}
+{% block chart %}
+    <script>
+      $(document).ready(function() {
+        var qid = {{qid}};
 
-<!-- Chart scripts -->
-<script src="http://code.highcharts.com/highcharts.js"></script>
-<script src="http://code.highcharts.com/highcharts-more.js"></script>
-<script src="http://code.highcharts.com/modules/exporting.js"></script>
+        drawSpiderweb();
 
+        $('#group-select').change(function() {
+          // Every we select a new group, let's redraw the chart.
+          drawSpiderweb();
+        });
 
-<!-- Page nav styling -->
-<link rel="stylesheet" type="text/css" href="{{ url_for('static', filename='ArrowNavigationStyles/css/normalize.css') }}" />
-<link rel="stylesheet" type="text/css" href="{{ url_for('static', filename='ArrowNavigationStyles/css/demo.css') }}" />
-<link rel="stylesheet" type="text/css" href="{{ url_for('static', filename='ArrowNavigationStyles/css/component.css') }}" />
-
-<!--[if IE]>
-  <script src="http://html5shiv.googlecode.com/svn/trunk/html5.js"></script>
-<![endif]-->
-
-<script>
-  $(document).ready(function() {
-    var qid = {{qid}};
-
-    initPageTitle(qid);
-    initAnswerList();
-    initPreviousPageArrow(qid);
-    initNextPageArrow(qid);
-
-    drawSpiderweb();
-
-    $('#spiderweb-group-select').change(function() {
-      // Every we select a new group, let's redraw the chart.
-      drawSpiderweb();
-    });
-
-  });
-
-  function initPageTitle(qid){
-    var question = getQuestion('q' + qid);
-    $('h3.page-title').html(question)
-  }
-
-  function initAnswerList(){
-    var qid = {{qid}};
-    var qKey = "q" + qid;
-
-    var answers = getAnswers(qKey);
-
-    $.each(answers, function(index, answer) {
-      $('#answer-list').append('<li>' + answer);
-    }); 
-  }
-
-  function initPreviousPageArrow(qid){
-    var prevQid = qid - 1;
-
-    if(prevQid > 0){
-      // Show the previous page nav arrow link
-      $('a.prev').css('visibility', 'visible');
-
-      if(prevQid == 0){
-        // Current page is first question page. Previous page is index page.
-        $('span.prev-title').html("Index page.");
-        $('h3.prev-text').html("Return to the index page.");
-
-        var indexHref = $('.navbar-brand').attr('href')
-        $('a.prev').attr('href', indexHref);
-        
-      }else{
-        // Current page is one of the question pages that is not the first question page.
-        var prevQuestion = getQuestion('q' + prevQid);
-        $('h3.prev-text').html(prevQuestion);
-
-        $('a.prev').attr('href', '{{ config.BASE_PATH }}/question/' + prevQid);
-      }
-    }
-  }
-
-  function initNextPageArrow(qid){
-    var nextQid = qid + 1;
-    var nextQuestion = '';
-
-    // Hide next page arrow button when we are at the last question.
-    if(qid == 15){
-      $('a.next').css('visibility', 'hidden');  
-    }else{
-      // Get next question.
-      nextQuestion = getQuestion('q' + nextQid);
-    }
-
-    // Set next page arrow button
-    $('h3.next-text').html(nextQuestion);
-    $('a.next').attr('href', '{{ config.BASE_PATH }}/question/' + nextQid);
-  }
-
-  /**
-   * Draw the spiderweb chart.
-   **/
-  function drawSpiderweb(){
-
-    group = $('#spiderweb-group-select').val();
-    jsonUrl = '{{ config.BASE_PATH }}/json/question/' + {{qid}} + '/group/' + group;
-    var qid = {{qid}};
-    var qKey = "q" + qid;
-
-    $.get(jsonUrl, function(jsonResult){
-        var categories = [];
-        var series = [];
-        var categoriesInitialized = false;
-
-        // For each group...
-        for (var j = 0; j < jsonResult['count']['group']; j++){
-            var answer = jsonResult['answers'][j];
-            var data = [];
-
-            // Get the value for each answer
-            for(var i = 0; i < jsonResult['count']['answers']; i++){
-                // Build the data array
-                var aKey = 'a' + (i + 1);
-                data[i] = answer[aKey];
-
-                // Build the categories array
-                if(!categoriesInitialized){
-                  categories[i] = i + 1;
-                }
-            }
-
-            categoriesInitialized = true;
-
-            var seriesItem = {
-                name: answer['_id'], // Get the name of the group
-                data: data,
-                pointPlacement: 'on'
-            }
-
-            series[j] = seriesItem;
-        }
-
-        $('#spiderweb').highcharts({
-          chart: {
-              polar: true,
-              type: 'line'
-          },
-
-          title: {
-              text: '',
-              x: -80
-          },
-
-          pane: {
-              size: '80%'
-          },
-
-          xAxis: {
-              categories: categories,
-              tickmarkPlacement: 'on',
-              lineWidth: 0
-          },
-
-          yAxis: {
-              gridLineInterpolation: 'polygon',
-              lineWidth: 0,
-              min: 0
-          },
-
-          tooltip: {
-              shared: true,
-              pointFormat: '<span style="color:{series.color}">{series.name}: <b>{point.y:,.0f}</b><br/>'
-          },
-
-          legend: {
-              align: 'right',
-              verticalAlign: 'top',
-              y: 70,
-              layout: 'vertical'
-          },
-
-          series: series
       });
-    });
-  }
 
-</script>
 
-<div class="svg-wrap">
-  <svg width="64" height="64" viewBox="0 0 64 64">
-    <path id="arrow-left" d="M26.667 10.667q1.104 0 1.885 0.781t0.781 1.885q0 1.125-0.792 1.896l-14.104 14.104h41.563q1.104 0 1.885 0.781t0.781 1.885-0.781 1.885-1.885 0.781h-41.563l14.104 14.104q0.792 0.771 0.792 1.896 0 1.104-0.781 1.885t-1.885 0.781q-1.125 0-1.896-0.771l-18.667-18.667q-0.771-0.813-0.771-1.896t0.771-1.896l18.667-18.667q0.792-0.771 1.896-0.771z" />
-  </svg>
-  <svg width="64" height="64" viewBox="0 0 64 64">
-    <path id="arrow-right" d="M37.333 10.667q1.125 0 1.896 0.771l18.667 18.667q0.771 0.771 0.771 1.896t-0.771 1.896l-18.667 18.667q-0.771 0.771-1.896 0.771-1.146 0-1.906-0.76t-0.76-1.906q0-1.125 0.771-1.896l14.125-14.104h-41.563q-1.104 0-1.885-0.781t-0.781-1.885 0.781-1.885 1.885-0.781h41.563l-14.125-14.104q-0.771-0.771-0.771-1.896 0-1.146 0.76-1.906t1.906-0.76z" />
-  </svg>
-</div>
+      /**
+       * Draw the spiderweb chart.
+       **/
+      function drawSpiderweb(){
+
+        group = $('#group-select').val();
+        jsonUrl = '{{ config.BASE_PATH }}/json/question/' + {{qid}} + '/group/' + group;
+        var qid = {{qid}};
+        var qKey = "q" + qid;
+
+        $.get(jsonUrl, function(jsonResult){
+            var categories = [];
+            var series = [];
+            var categoriesInitialized = false;
+
+            // For each group...
+            for (var j = 0; j < jsonResult['count']['group']; j++){
+                var answer = jsonResult['answers'][j];
+                var data = [];
+
+                // Get the value for each answer
+                for(var i = 0; i < jsonResult['count']['answers']; i++){
+                    // Build the data array
+                    var aKey = 'a' + (i + 1);
+                    data[i] = answer[aKey];
+
+                    // Build the categories array
+                    if(!categoriesInitialized){
+                      categories[i] = i + 1;
+                    }
+                }
+
+                categoriesInitialized = true;
+
+                var seriesItem = {
+                    name: answer['_id'], // Get the name of the group
+                    data: data,
+                    pointPlacement: 'on'
+                }
+
+                series[j] = seriesItem;
+            }
+
+            $('#spiderweb').highcharts({
+              chart: {
+                  polar: true,
+                  type: 'line'
+              },
+
+              title: {
+                  text: '',
+                  x: -80
+              },
+
+              pane: {
+                  size: '80%'
+              },
+
+              xAxis: {
+                  categories: categories,
+                  tickmarkPlacement: 'on',
+                  lineWidth: 0
+              },
+
+              yAxis: {
+                  gridLineInterpolation: 'polygon',
+                  lineWidth: 0,
+                  min: 0
+              },
+
+              tooltip: {
+                  shared: true,
+                  pointFormat: '<span style="color:{series.color}">{series.name}: <b>{point.y:,.0f}</b><br/>'
+              },
+
+              legend: {
+                  align: 'right',
+                  verticalAlign: 'top',
+                  y: 70,
+                  layout: 'vertical'
+              },
+
+              series: series
+          });
+        });
+      }
+
+    </script>
 
 <div id="answers-container">
   <ol id="answer-list">
@@ -196,50 +109,6 @@
 </div>
 <br>
 
-<section>
-  <nav class="nav-growpop">
-    <a class="prev" style="visibility: hidden;"  href="/item1">
-      <span class="icon-wrap"><svg class="icon" width="24" height="24" viewBox="0 0 64 64"><use xlink:href="#arrow-left"></svg></span>
-      <div>
-        <span class="prev-title">Previous Question</span>
-        <h3 class="prev-text"></h3>
-      </div>
-    </a>
-    <a class="next" href="/item3">
-      <span class="icon-wrap"><svg class="icon" width="24" height="24" viewBox="0 0 64 64"><use xlink:href="#arrow-right"></svg></span>
-      <div>
-        <span class="next-title">Next Question</span>
-        <h3 class="next-text"></h3>
-      </div>
-    </a>
-  </nav>
-  <div>
-    <div>
-      <div id="group-selection-container">
-        <form class="form-horizontal" role="form">
-            <div class="form-group">
-              <label class="control-label col-sm-2" for="spiderweb-group-select">Group&nbsp;by</label>
-              <div class="col-sm-7">
-                <select id="spiderweb-group-select" class="form-control">
-                  <option value="age.label" selected>Age</option>
-                  <option value="education">Education</option>
-                  <option value="employment.level">Employment Level</option>
-                  <option value="employment.position">Employment Position</option>
-                  <option value="ethnicity">Ethnicity</option>
-                  <option value="gender">Gender</option>
-                  <option value="income.label">Income</option>
-                  <option value="maritalstatus">Marital Status</option>
-                </select>
-              </div>
-            </div>
-        </form>
-      </div>
-      <div id="spiderweb" style="min-width: 500px; max-width: 700px; height: 500px; margin: 0 auto"></div>  
-    </div>
-  </div>
-
-</section>
-
-
+    <div id="spiderweb" style="min-width: 500px; max-width: 700px; height: 500px; margin: 0 auto"></div>
 {% endblock %}
 
