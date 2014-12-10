@@ -23,10 +23,10 @@
        **/
       function drawSpiderweb(){
 
-        group = $('#group-select').val();
-        disaggregate = $('#disaggregate-select').val();
+        var group = $('#group-select').val();
+        var disaggregate = $('#disaggregate-select').val();
 
-        jsonUrl = '{{ config.BASE_PATH }}/json/question/' + {{qid}} + '/group/' + group + '/disaggregate/' + disaggregate;
+        var jsonUrl = '{{ config.BASE_PATH }}/json/question/' + {{qid}} + '/group/' + group + '/disaggregate/' + disaggregate;
 
         var qid = {{qid}};
         var qKey = "q" + qid;

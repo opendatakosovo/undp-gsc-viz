@@ -12,24 +12,37 @@
           drawBarChart();
         });
 
+         $('#disaggregate-select').change(function() {
+          // Every we select a new disaggregation, let's redraw the chart.
+          drawBarChart();
+        });
+
       });
 
-      function drawBarChart(){
+    function drawBarChart(){
 
-      var group = $('#group-select').val();
-      var jsonUrl = '{{ config.BASE_PATH }}/json/question/' + {{qid}} + '/group/' + group;
+        var group = $('#group-select').val();
+        var disaggregate = $('#disaggregate-select').val();
+
+        var jsonUrl = '{{ config.BASE_PATH }}/json/question/' + {{qid}} + '/group/' + group + '/disaggregate/' + disaggregate;
+
+        var qid = {{qid}};
+        var qKey = "q" + qid;
+
+        var titles = [];
+        var disaggregatedSeries = [];
+        var seriesIndex = 0;
+        var disaggregatedSeriesIndex = 0;
 
         $.get(jsonUrl, function(jsonResult){
-            var data = [];
-
-            $.each(jsonResult, function(idx, itm){
             var categories = [];
             var series = [];
             var categoriesInitialized = false;
 
-            // For each group...
-            for (var j = 0; j < jsonResult['count']['group']; j++){
-                var answer = jsonResult['answers'][j];
+            var currentDisaggregate = jsonResult['answers'][0]['_id']['disaggregate'];
+            titles[disaggregatedSeriesIndex] = currentDisaggregate;
+
+            $.each(jsonResult['answers'], function(j, answer){
                 var data = [];
 
                 // Get the value for each answer
@@ -40,53 +53,95 @@
 
                     // Build the categories array
                     if(!categoriesInitialized){
-                      categories[i] = i + 1;
+                      categories[i] = getAnswer(qKey, aKey);
                     }
                 }
 
                 categoriesInitialized = true;
 
                 var seriesItem = {
-                    name: answer['_id'], // Get the name of the group
+                    name: answer['_id']['group'], // Get the name of the group
                     data: data
                 }
 
-                series[j] = seriesItem;
+                if(answer['_id']['disaggregate'] != currentDisaggregate){
+                  currentDisaggregate = answer['_id']['disaggregate']
+                  disaggregatedSeries[disaggregatedSeriesIndex] = series;
+                  series = [];
+                  seriesIndex = 0;
+
+                  disaggregatedSeriesIndex++;
+                  titles[disaggregatedSeriesIndex] = currentDisaggregate;
                 }
 
-                $('#barchart').highcharts({
-
-                    chart: {
-                        type: 'bar'
-                    },
-                    title: {
-                        text: ''
-                    },
-                    xAxis: {
-                        categories: ['No','Yes']
-                    },
-                    yAxis: {
-                        min: 0,
-                        title: {
-                            text: ''
-                        }
-                    },
-                    legend: {
-                        reversed: true
-                    },
-                    plotOptions: {
-                        series: {
-                            stacking: 'normal'
-                        }
-                    },
-                    series: series
-                });
+                series[seriesIndex] = seriesItem;
+                seriesIndex++;
             });
+
+            disaggregatedSeries[disaggregatedSeriesIndex] = series;
+
+            renderBarChart('barchart-0', titles[0], categories, disaggregatedSeries[0]);
+            renderBarChart('barchart-1', titles[1], categories, disaggregatedSeries[1]);
+        });
+    }
+
+    function renderBarChart(divId, title, categories, series){          
+        $('#' + divId).highcharts({
+            chart: {
+                type: 'bar'
+            },
+            title: {
+                text: '',
+            },
+            xAxis: {
+                categories: categories
+            },
+            yAxis: {
+                min: 0,
+                title: {
+                    text: title
+                }
+            },
+            tooltip: {
+                 shared: true,
+                 headerFormat: '',
+                 pointFormat: '<span style="color:{series.color}">{series.name}: <b>{point.y:,.0f}</b><br/><br/>',
+            },
+            legend: {
+                reversed: false
+            },
+            plotOptions: {
+                series: {
+                    stacking: 'normal'
+                }
+            },
+            series: series
         });
     }
 </script>
 {% endblock %}
 
+{% block disaggregate %}
+<div class="form-group">
+  <label class="control-label" for="group-select">Disaggregate&nbsp;by</label>
+  <select id="disaggregate-select" class="form-control">
+    <option value="employment.level">Employment Level</option>
+    <option value="gender" selected>Gender</option>
+  </select>
+</div>
+{% endblock %}
+
 {% block chart %}
-    <div id="barchart" style="min-width: 500px; max-width: 700px; height: 500px; margin: 0 auto"></div>
+<div align="center">
+  <table>
+    <tr>
+      <td>
+        <div id="barchart-0" style="min-width: 550px; max-width: 700px; height: 500px; margin: 0 auto"></div>
+      </td>
+      <td>
+        <div id="barchart-1" style="min-width: 550px; max-width: 700px; height: 500px; margin: 0 auto"></div>
+      </td>
+    </tr>
+  </table>
+</div>
 {% endblock %}

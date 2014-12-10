@@ -12,14 +12,15 @@
           drawBarChart();
         });
 
-      });
+    });
 
-      function drawBarChart(){
+    function drawBarChart(){
 
-      var group = $('#group-select').val();
-      var jsonUrl = '{{ config.BASE_PATH }}/json/question/' + {{qid}} + '/group/' + group;
-      var qid = {{qid}};
-      var qKey = 'q' + qid;
+        var group = $('#group-select').val();
+        var jsonUrl = '{{ config.BASE_PATH }}/json/question/' + {{qid}} + '/group/' + group;
+        var qid = {{qid}};
+        var qKey = 'q' + qid;
+
         $.get(jsonUrl, function(jsonResult){
             var data = [];
 
@@ -78,7 +79,7 @@
                          pointFormat: '<span style="color:{series.color}">{series.name}: <b>{point.y:,.0f}</b><br/><br/>',
                     },
                     legend: {
-                        reversed: true
+                        reversed: false
                     },
                     plotOptions: {
                         series: {
