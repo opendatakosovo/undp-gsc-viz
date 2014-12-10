@@ -69,26 +69,24 @@
 </script>
 
 <div id="group-selection-container">
-  <form class="form-horizontal" role="form">
-      <div class="form-group">
-        <label class="control-label col-sm-4" for="spiderweb-group-select">Group&nbsp;by</label>
-        <div class="col-sm-7">
-          <select id="spiderweb-group-select" class="form-control">
-            <option value="age.label">Age</option>
-            <option value="education">Education</option>
-            <option value="employment.level">Employment Level</option>
-            <option value="employment.position">Employment Position</option>
-            <option value="ethnicity">Ethnicity</option>
-            <option value="gender">Gender</option>
-            <option value="income.label">Income</option>
-            <option value="maritalstatus">Marital Status</option>
-            <option value="municipality" selected>Municipality</option>
-          </select>
-        </div>
-      </div>
-  </form>
+    <div align="center"/>
+        <form class="form-inline" role="form">
+            <div class="form-group">
+            <label class="control-label" for="spiderweb-group-select">Group&nbsp;by</label>
+                <select id="spiderweb-group-select" class="form-control">
+                    <option value="age.label">Age</option>
+                    <option value="education">Education</option>
+                    <option value="employment.level">Employment Level</option>
+                    <option value="employment.position">Employment Position</option>
+                    <option value="ethnicity">Ethnicity</option>
+                    <option value="gender">Gender</option>
+                    <option value="income.label">Income</option>
+                    <option value="maritalstatus">Marital Status</option>
+                    <option value="municipality" selected>Municipality</option>
+                 </select>
+            </div>
+        </form>
+    </div>
 </div>
 <div id="piechart" style="min-width: 410px; height: 500px; max-width: 700px; margin: 0 auto"></div>
-
-
 {% endblock %}
