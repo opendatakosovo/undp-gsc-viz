@@ -1,5 +1,6 @@
 {% extends "answers.html" %}
-{% block chart %}
+
+{% block script %}
     <script>
       $(document).ready(function() {
         var qid = {{qid}};
@@ -100,9 +101,10 @@
           });
         });
       }
-
     </script>
+{% endblock %}
 
+{% block chart %}
     <div id="spiderweb" style="min-width: 500px; max-width: 700px; height: 500px; margin: 0 auto"></div>
 {% endblock %}
 

@@ -1,15 +1,6 @@
 {% extends "answers.html" %}
-{% block disaggregate %}
-<div class="form-group">
-  <label class="control-label" for="group-select">Disaggregate&nbsp;by</label>
-  <select id="disaggregate-select" class="form-control">
-    <option value="employment.level">Employment Level</option>
-    <option value="gender" selected>Gender</option>
-  </select>
-</div>
-{% endblock %}
 
-{% block chart %}
+{% block script %}
     <script>
       $(document).ready(function() {
         var qid = {{qid}};
@@ -25,9 +16,7 @@
           // Every we select a new disaggregation, let's redraw the chart.
           drawSpiderweb();
         });
-
       });
-
 
       /**
        * Draw the spiderweb chart.
@@ -142,9 +131,20 @@
           series: series
         }); 
       }
-
     </script>
+{% endblock %}
 
+{% block disaggregate %}
+<div class="form-group">
+  <label class="control-label" for="group-select">Disaggregate&nbsp;by</label>
+  <select id="disaggregate-select" class="form-control">
+    <option value="employment.level">Employment Level</option>
+    <option value="gender" selected>Gender</option>
+  </select>
+</div>
+{% endblock %}
+
+{% block chart %}
 <div align="center">
   <table>
     <tr>
