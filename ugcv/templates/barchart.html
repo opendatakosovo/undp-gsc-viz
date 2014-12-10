@@ -18,7 +18,8 @@
 
       var group = $('#group-select').val();
       var jsonUrl = '{{ config.BASE_PATH }}/json/question/' + {{qid}} + '/group/' + group;
-
+      var qid = {{qid}};
+      var qKey = 'q' + qid;
         $.get(jsonUrl, function(jsonResult){
             var data = [];
 
@@ -40,7 +41,7 @@
 
                     // Build the categories array
                     if(!categoriesInitialized){
-                      categories[i] = i + 1;
+                      categories[i] = getAnswer(qKey, aKey);
                     }
                 }
 
@@ -63,7 +64,7 @@
                         text: ''
                     },
                     xAxis: {
-                        categories: ['No','Yes']
+                        categories: categories
                     },
                     yAxis: {
                         min: 0,
