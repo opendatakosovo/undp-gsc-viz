@@ -1,0 +1,163 @@
+{% extends "answers.html" %}
+{% block disaggregate %}
+<div class="form-group">
+  <label class="control-label" for="group-select">Disaggregate&nbsp;by</label>
+  <select id="disaggregate-select" class="form-control">
+    <option value="employment.level">Employment Level</option>
+    <option value="gender" selected>Gender</option>
+  </select>
+</div>
+{% endblock %}
+
+{% block chart %}
+    <script>
+      $(document).ready(function() {
+        var qid = {{qid}};
+
+        drawSpiderweb();
+
+        $('#group-select').change(function() {
+          // Every we select a new group, let's redraw the chart.
+          drawSpiderweb();
+        });
+
+        $('#disaggregate-select').change(function() {
+          // Every we select a new disaggregation, let's redraw the chart.
+          drawSpiderweb();
+        });
+
+      });
+
+
+      /**
+       * Draw the spiderweb chart.
+       **/
+      function drawSpiderweb(){
+
+        group = $('#group-select').val();
+        disaggregate = $('#disaggregate-select').val();
+
+        jsonUrl = '{{ config.BASE_PATH }}/json/question/' + {{qid}} + '/group/' + group + '/disaggregate/' + disaggregate;
+
+        var qid = {{qid}};
+        var qKey = "q" + qid;
+
+        var titles = [];
+        var disaggregatedSeries = [];
+        var seriesIndex = 0;
+        var disaggregatedSeriesIndex = 0;
+
+        $.get(jsonUrl, function(jsonResult){
+            var categories = [];
+            var series = [];
+            var categoriesInitialized = false;
+
+            var currentDisaggregate = jsonResult['answers'][0]['_id']['disaggregate'];
+            titles[disaggregatedSeriesIndex] = currentDisaggregate;
+
+            $.each(jsonResult['answers'], function(j, answer){
+                var data = [];
+
+                // Get the value for each answer
+                for(var i = 0; i < jsonResult['count']['answers']; i++){
+                    // Build the data array
+                    var aKey = 'a' + (i + 1);
+                    data[i] = answer[aKey];
+
+                    // Build the categories array
+                    if(!categoriesInitialized){
+                      categories[i] = i + 1;
+                    }
+                }
+
+                categoriesInitialized = true;
+
+                var seriesItem = {
+                    name: answer['_id']['group'], // Get the name of the group
+                    data: data,
+                    pointPlacement: 'on'
+                }
+
+                if(answer['_id']['disaggregate'] != currentDisaggregate){
+                  currentDisaggregate = answer['_id']['disaggregate']
+                  disaggregatedSeries[disaggregatedSeriesIndex] = series;
+                  series = [];
+                  seriesIndex = 0;
+
+                  disaggregatedSeriesIndex++;
+                  titles[disaggregatedSeriesIndex] = currentDisaggregate;
+                }
+
+                series[seriesIndex] = seriesItem;
+                seriesIndex++;
+            });
+
+            disaggregatedSeries[disaggregatedSeriesIndex] = series;
+
+            renderSpiderweb('spiderweb-0', titles[0], categories, disaggregatedSeries[0]);
+            renderSpiderweb('spiderweb-1', titles[1], categories, disaggregatedSeries[1]);
+        });
+      }
+
+      function renderSpiderweb(divId, title, categories, series){          
+        $('#' + divId).highcharts({
+          chart: {
+              polar: true,
+              type: 'line'
+          },
+
+          title: {
+              text: title,
+              x: -80
+          },
+
+          pane: {
+              size: '80%'
+          },
+
+          xAxis: {
+              categories: categories,
+              tickmarkPlacement: 'on',
+              lineWidth: 0
+          },
+
+          yAxis: {
+              gridLineInterpolation: 'polygon',
+              lineWidth: 0,
+              min: 0
+          },
+
+          tooltip: {
+              shared: true,
+              pointFormat: '<span style="color:{series.color}">{series.name}: <b>{point.y:,.0f}</b><br/>'
+          },
+
+          legend: {
+              align: 'right',
+              verticalAlign: 'top',
+              y: 70,
+              layout: 'vertical'
+          },
+
+          series: series
+        }); 
+      }
+
+    </script>
+
+<div align="center">
+  <table>
+    <tr>
+      <td>
+        <div id="spiderweb-0" style="min-width: 500px; max-width: 700px; height: 500px; margin: 0 auto"></div>
+      </td>
+      <td>
+        <div id="spiderweb-1" style="min-width: 500px; max-width: 700px; height: 500px; margin: 0 auto"></div>
+      </td>
+    </tr>
+  </table>
+</div>
+
+
+{% endblock %}
+

@@ -7,7 +7,7 @@ section {
 	text-align: center;
 	position: relative;
 	/*margin: 40px;*/
-	height: calc(100% - 80px);
+	height: 1200px;
 	overflow: hidden;
 }
 

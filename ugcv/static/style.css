@@ -34,7 +34,6 @@ div#answers-container{
   margin-right:30%;
 }
 
-div#group-selection-container{
-  margin-left:33%;
-  margin-right:33%;
+div#chart-container, div#selection-container{
+  width: 100%;
 }

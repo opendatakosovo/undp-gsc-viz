@@ -45,7 +45,15 @@
             {% else %}
             <li><a href="{{ config.BASE_PATH }}">Surveyee Distribution</a></li>
             {% endif %}
-            <li><a href="{{ config.BASE_PATH }}/question/1">Survey Answers</a></li>
+            <li role="presentation" class="dropdown">
+              <a class="dropdown-toggle" data-toggle="dropdown" href="#" role="button" aria-expanded="false">
+                Survey Answers <span class="caret"></span>
+              </a>
+              <ul class="dropdown-menu" role="menu">
+                <li><a href="{{ config.BASE_PATH }}/question/1">Aggregated</a></li>
+                <li><a href="{{ config.BASE_PATH }}/question/1/disaggregate">Disaggregated</a></li>
+              </ul>
+            </li>
             <li><a href="{{ config.BASE_PATH }}/corruption-types">Corruption Types</a></li>
         </ul>
       </div>

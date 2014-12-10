@@ -130,6 +130,11 @@ def register_json_url_rules(app):
         '/json/question/<int:qid>/group/<string:group>',
         view_func=GroupedAnswers.as_view('json_groupedanswers'))
 
+    # Question and Answers.
+    app.add_url_rule(
+        '/json/question/<int:qid>/group/<string:group>/disaggregate/<string:disaggregate>',
+        view_func=GroupedAnswers.as_view('json_disaggregated_groupedanswers'))
+
     # Corruption type.
     app.add_url_rule(
         '/json/documented-corruptions/<string:corruption_type>/group/<string:group>',
@@ -149,6 +154,10 @@ def register_page_url_rules(app):
     app.add_url_rule(
         '/question/<int:qid>',
         view_func=Answers.as_view('answers'))
+
+    app.add_url_rule(
+        '/question/<int:qid>/disaggregate',
+        view_func=Answers.as_view('disaggregated_answers'))
 
     # Corruption Type.
     app.add_url_rule(

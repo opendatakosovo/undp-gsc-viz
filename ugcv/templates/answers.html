@@ -63,7 +63,14 @@
         var prevQuestion = getQuestion('q' + prevQid);
         $('h3.prev-text').html(prevQuestion);
 
-        $('a.prev').attr('href', '{{ config.BASE_PATH }}/question/' + prevQid);
+        var prevHref = '';
+        if ( $("#disaggregate-select").length > 0) {
+          prevHref = '{{ config.BASE_PATH }}/question/' + prevQid + '/disaggregate';
+        }else{
+          prevHref = '{{ config.BASE_PATH }}/question/' + prevQid;
+        }
+
+        $('a.prev').attr('href', prevHref);
       }
     }
   }
@@ -82,7 +89,15 @@
 
     // Set next page arrow button
     $('h3.next-text').html(nextQuestion);
-    $('a.next').attr('href', '{{ config.BASE_PATH }}/question/' + nextQid);
+
+    var nextHref = '';
+    if ( $("#disaggregate-select").length > 0) {
+      nextHref = '{{ config.BASE_PATH }}/question/' + nextQid + '/disaggregate';
+    }else{
+      nextHref = '{{ config.BASE_PATH }}/question/' + nextQid;
+    }
+
+    $('a.next').attr('href', nextHref);
   }
 </script>
 
@@ -118,30 +133,31 @@
       </ol>
     </div>
     <br>
-    <div>
-      <div id="group-selection-container">
-        <form class="form-horizontal" role="form">
-            <div class="form-group">
-              <label class="control-label col-sm-2" for="group-select">Group&nbsp;by</label>
-              <div class="col-sm-7">
-                <select id="group-select" class="form-control">
-                  <option value="age.label" selected>Age</option>
-                  <option value="education">Education</option>
-                  <option value="employment.level">Employment Level</option>
-                  <option value="employment.position">Employment Position</option>
-                  <option value="ethnicity">Ethnicity</option>
-                  <option value="gender">Gender</option>
-                  <option value="income.label">Income</option>
-                  <option value="maritalstatus">Marital Status</option>
-                </select>
-              </div>
-            </div>
+    <div id="selection-container">
+      <div align="center">
+        <form class="form-inline" role="form">
+          {% block disaggregate %}{% endblock %}
+          <div class="form-group">
+            <label class="control-label" for="group-select">&nbsp;Group&nbsp;by</label>
+            <select id="group-select" class="form-control">
+              <option value="age.label" selected>Age</option>
+              <option value="education">Education</option>
+              <option value="employment.level">Employment Level</option>
+              <option value="employment.position">Employment Position</option>
+              <option value="ethnicity">Ethnicity</option>
+              <option value="gender">Gender</option>
+              <option value="income.label">Income</option>
+              <option value="maritalstatus">Marital Status</option>
+            </select>
+          </div>
         </form>
       </div>
+    </div>
+    <br>
+    <div id="chart-container">
       {% block chart %}{% endblock %}
     </div>
   </div>
-
 </section>
 
 

@@ -1,0 +1,90 @@
+{% extends "answers.html" %}
+{% block chart %}
+<script type="text/javascript">
+
+    $(document).ready(function() {
+
+        var qid = {{qid}};
+        drawBarChart();
+
+        $('#group-select').change(function() {
+          // Every we select a new group, let's redraw the chart.
+          drawBarChart();
+        });
+
+      });
+
+      function drawBarChart(){
+
+      var group = $('#group-select').val();
+      var jsonUrl = '{{ config.BASE_PATH }}/json/question/' + {{qid}} + '/group/' + group;
+
+        $.get(jsonUrl, function(jsonResult){
+            var data = [];
+
+            $.each(jsonResult, function(idx, itm){
+            var categories = [];
+            var series = [];
+            var categoriesInitialized = false;
+
+            // For each group...
+            for (var j = 0; j < jsonResult['count']['group']; j++){
+                var answer = jsonResult['answers'][j];
+                var data = [];
+
+                // Get the value for each answer
+                for(var i = 0; i < jsonResult['count']['answers']; i++){
+                    // Build the data array
+                    var aKey = 'a' + (i + 1);
+                    data[i] = answer[aKey];
+
+                    // Build the categories array
+                    if(!categoriesInitialized){
+                      categories[i] = i + 1;
+                    }
+                }
+
+                categoriesInitialized = true;
+
+                var seriesItem = {
+                    name: answer['_id'], // Get the name of the group
+                    data: data
+                }
+
+                series[j] = seriesItem;
+                }
+
+                $('#barchart').highcharts({
+
+                    chart: {
+                        type: 'bar'
+                    },
+                    title: {
+                        text: ''
+                    },
+                    xAxis: {
+                        categories: ['No','Yes']
+                    },
+                    yAxis: {
+                        min: 0,
+                        title: {
+                            text: ''
+                        }
+                    },
+                    legend: {
+                        reversed: true
+                    },
+                    plotOptions: {
+                        series: {
+                            stacking: 'normal'
+                        }
+                    },
+                    series: series
+                });
+
+            });
+        });
+    }
+</script>
+    <div id="barchart" style="min-width: 500px; max-width: 700px; height: 500px; margin: 0 auto"></div>
+{% endblock %}
