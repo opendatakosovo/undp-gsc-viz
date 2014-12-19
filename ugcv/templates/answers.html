@@ -18,10 +18,15 @@
 
 <script>
   $(document).ready(function() {
-    var qid = {{qid}};
+    var qid = {{ qid }};
+    var chartType = '{{ chart_type }}';
 
     initPageTitle(qid);
-    initAnswerList();
+
+    if(chartType != "barchart"){
+      initAnswerList();
+    }
+
     initPreviousPageArrow(qid);
     initNextPageArrow(qid);
 
@@ -65,9 +70,9 @@
 
         var prevHref = '';
         if ( $("#disaggregate-select").length > 0) {
-          prevHref = '{{ config.BASE_PATH }}/question/' + prevQid + '/disaggregate';
+          prevHref = '{{ config.BASE_PATH }}/question/' + prevQid + '/disaggregate/{{ chart_type }}';
         }else{
-          prevHref = '{{ config.BASE_PATH }}/question/' + prevQid;
+          prevHref = '{{ config.BASE_PATH }}/question/' + prevQid + '/{{ chart_type }}';
         }
 
         $('a.prev').attr('href', prevHref);
@@ -92,9 +97,9 @@
 
     var nextHref = '';
     if ( $("#disaggregate-select").length > 0) {
-      nextHref = '{{ config.BASE_PATH }}/question/' + nextQid + '/disaggregate';
+      nextHref = '{{ config.BASE_PATH }}/question/' + nextQid + '/disaggregate/{{ chart_type }}';
     }else{
-      nextHref = '{{ config.BASE_PATH }}/question/' + nextQid;
+      nextHref = '{{ config.BASE_PATH }}/question/' + nextQid + '/{{ chart_type }}';
     }
 
     $('a.next').attr('href', nextHref);

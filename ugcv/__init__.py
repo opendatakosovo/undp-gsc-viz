@@ -152,11 +152,11 @@ def register_page_url_rules(app):
 
     # Question and Answers.
     app.add_url_rule(
-        '/question/<int:qid>',
+        '/question/<int:qid>/<string:chart_type>',
         view_func=Answers.as_view('answers'))
 
     app.add_url_rule(
-        '/question/<int:qid>/disaggregate',
+        '/question/<int:qid>/disaggregate/<string:chart_type>',
         view_func=Answers.as_view('disaggregated_answers'))
 
     # Corruption Type.
